@@ -6,7 +6,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/app.js', function(req, res) {
-    res.sendFile(__dirname + '/app/app.js');
+    res.sendFile(__dirname + '/app.js');
 });
 
 app.get('/lib/css/:id', function(req, res) {

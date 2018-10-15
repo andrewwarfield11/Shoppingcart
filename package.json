@@ -18,7 +18,6 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.7.0",
-    "eslint-config-google": "^0.10.0",
     "mocha": "^5.2.0"
   },
   "engines": {

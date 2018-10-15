@@ -209,7 +209,7 @@ $(function () {
             var book = data["products"][key];
             console.log(book);
             products.push(book);
-            col = $('<div class="col"></div>');
+            col = $('<div class="col col-md-offset-2"></div>');
             col.append($('<h2 id="' + book["id"] + 'name' + '"></h2>').text(book["name"])); // book name
             col.append($('<h3 id="' + book["id"] + 'genre' + '"></h3>').text("Genre: " + book["genre"])); // book genre
             col.append($('<h3 id="' + book["id"] + 'price' + '"></h3>').text("Price: $" + book["price"])); // book price

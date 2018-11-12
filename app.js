@@ -24,7 +24,8 @@ $(function () {
     var p3 = false;
 
     var rowSize = 3;
-
+    // every time one of these is clicked, scrap previous html in main and add new ones
+    // try using .is(CLICKED)
     $("#available label").on("click", function (event) {
         console.log(event);
         av = !av;
@@ -148,48 +149,45 @@ $(function () {
         }
     }
     function checkAv(i) {
-        if (av && products[i]["stock"] > 0 || !av)
-            return true;
-        else
+        if (av && products[i]["stock"] > 0 || !av || (av && unav))
+          return true;
+        else {
+          return false;
+        }
+      }
+      function checkUnav(i) {
+        if (unav && products[i]["stock"] == 0 || !unav || (av&&unav))
+          return true;
+          else {
             return false;
-    }
-    function checkUnav(i) {
-        if (unav && products[i]["stock"] == 0 || !unav)
-            return true;
-        else
-            return false;
-    }
-    function checkP1(i) {
-        if (p1 && products[i]["price"] < 25 || !p1)
-            return true;
-        else
-            return false;
-    }
-    function checkP2(i) {
-        if (p2 && products[i]["price"] < 50 && products[i]["price"] >= 25 || !p2)
-            return true;
-        else
-            return false;
-    }
-    function checkP3(i) {
-        if (p3 && products[i]["price"] >= 50 || !p3)
-            return true;
-        else
-            return false;
-    }
-    function checkR1(i) {
-        if (r1 && products[i]["rating"] >= 1 || !r1)
-            return true;
-        else return false;
-    }
-    function checkR2(i) {
-        if (r2 && products[i]["rating"] == 2 || !r2)
-            return true;
-        else return false;
+          }
+      }
+      function checkPrice(i) {
 
-    }
+        if( (p1 && products[i]['price'] <= 25) || (p2 && (products[i]['price'] >= 25 
+        && products[i]['price'] <= 50) ) || (p3 && products[i]['price'] >= 50) || (!p1 && !p2 && !p3))
+          return true;
+        else
+          return false
+
+      }
+      function checkR1(i) {
+        if (r1 && products[i]["rating"] >= 1 || !r1)
+          return true;
+          else {
+            return false;
+          }
+      }
+      function checkR2(i) {
+        if (r2 && products[i]["rating"] == 2 || !r2)
+          return true;
+          else {
+            return false;
+          }
+  
+      }
     function fitsRequirements(i) {
-        if (checkAv(i) && checkUnav(i) && checkP1(i) && checkP2(i) && checkP3(i) && checkR1(i) && checkR2(i))
+        if (checkAv(i) && checkUnav(i) && checkPrice(i) && checkR1(i) && checkR2(i))
             return true;
         else return false;
     }

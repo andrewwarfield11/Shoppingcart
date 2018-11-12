@@ -46,6 +46,9 @@
     .page-footer {
         text-align: center;
     }
+    .footer {
+        width: 100%;
+    }
 </style>
 </head>
 
@@ -53,7 +56,7 @@
     <!-- add a container -->
     <div class="container">
         <!--Navbar.-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
             <div class="navbar-nav">
                 <a class="nav-link" href="#">Departments</a>
                 <form class="form-inline my-2 my-lg-0">
@@ -85,16 +88,18 @@
                         </li>
                         <li class="list-group item">
                             <div class="checkbox" id="available">
+                                <!--Look at what was actually submitted and compare-->
                                 <label>
-                                    <input type="checkbox" value="">
-                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                    <input type="checkbox" id="av">
+                                    <span class="cr" id="available"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     Available
                                 </label>
                         </li>
                         <li class="list-group item">
                             <div class="checkbox" id="unavailable">
                                 <label>
-                                    <input type="checkbox" value="">
+                                    <!--NOTE: the id must be in the input type checkbox-->
+                                    <input type="checkbox" id="unav">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     Unavailable
                                 </label>
@@ -109,7 +114,7 @@
                         <li class="list-group item">
                             <div class="checkbox" id="price1">
                                 <label>
-                                    <input type="checkbox" value="">
+                                    <input type="checkbox" id="price1">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     $0-$25
                                 </label>
@@ -117,7 +122,7 @@
                         <li class="list-group item">
                             <div class="checkbox" id="price2">
                                 <label>
-                                    <input type="checkbox" value="">
+                                    <input type="checkbox" id="price2">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     $25-$50
                                 </label>
@@ -125,7 +130,7 @@
                         <li class="list-group item">
                             <div class="checkbox" id="price3">
                                 <label>
-                                    <input type="checkbox" value="">
+                                    <input type="checkbox" id="price3">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     $50-$100
                                 </label>
@@ -140,7 +145,7 @@
                         <li class="list-group item">
                             <div class="checkbox" id="rating1">
                                 <label>
-                                    <input type="checkbox" value="">
+                                    <input type="checkbox" id="rating1">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     +1
                                 </label>
@@ -148,7 +153,7 @@
                         <li class="list-group item">
                             <div class="checkbox" id="rating2">
                                 <label>
-                                    <input type="checkbox" value="">
+                                    <input type="checkbox" id="rating2">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     +2
                                 </label>
@@ -165,12 +170,12 @@
         </div>
 
         <!-- Footer -->
-        <footer class="page-footer font-small blue text-center">
+        <footer class="page-footer text-center bg-dark">
             <div class="row">
                 <!--I made the extra columns to get resources centered on the page.-->
                 <div class="col"></div>
                 <div class="col">
-                    <h2 class="text-center">Resources</h1>
+                    <h2 class="text-center text-white">Resources</h1>
                 </div>
                 <div class="col"></div>
             </div>

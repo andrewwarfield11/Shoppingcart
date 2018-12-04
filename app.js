@@ -29,134 +29,77 @@ $(function () {
     $("#available label").on("click", function (event) {
         console.log(event);
         av = !av;
-        var index = 0;
-        products.forEach(function (product) {
-
-            if (fitsRequirements(index))
-                show(index);
-            else
-                hide(index);
-
-            index++;
-        });
+        rebuild();
     });
     $("#unavailable label").on("click", function (event) {
         console.log(event);
         unav = !unav;
-        var index = 0;
-        products.forEach(function (product) {
-
-            if (fitsRequirements(index))
-                show(index);
-            else
-                hide(index);
-
-            index++;
-        });
+        rebuild();
     });
     $("#price1 label").on("click", function (event) {
         console.log(event);
         p1 = !p1;
-        var index = 0;
-        products.forEach(function (product) {
-
-            if (fitsRequirements(index))
-                show(index);
-            else
-                hide(index);
-
-            index++;
-        });
+        rebuild();
     });
     $("#price2 label").on("click", function (event) {
         console.log(event);
         p2 = !p2;
-        var index = 0;
-        products.forEach(function (product) {
-
-            if (fitsRequirements(index))
-                show(index);
-            else
-                hide(index);
-
-            index++;
-        });
+        rebuild();
     });
     $("#price3 label").on("click", function (event) {
         console.log(event);
         p3 = !p3;
-        var index = 0;
-        products.forEach(function (product) {
-
-            if (fitsRequirements(index))
-                show(index);
-            else
-                hide(index);
-
-            index++;
-        });
+        rebuild();
     });
     // rating + 1 filter
     $("#rating1 label").on("click", function (event) {
         console.log(event);
         r1 = !r1;
-        var index = 0;
-        products.forEach(function (product) {
-
-            if (fitsRequirements(index))
-                show(index);
-            else
-                hide(index);
-            index++;
-        });
+        rebuild();
     });
 
     // rating + 2 filter
     $("#rating2 label").on("click", function (event) {
         console.log(event);
         r2 = !r2;
-        var index = 0;
-        products.forEach(function (product) {
-
-            if (fitsRequirements(index))
-                show(index);
-            else
-                hide(index);
-            index++;
-        });
+        rebuild();
     });
 
     function isHidden(i) {
-        if ($("#" + products[i]["id"] + "name").is(":hidden")) return true;
+        if ($("#" + i["id"] + "name").is(":hidden")) return true;
         else return false;
     }
     function show(i) {
         if (isHidden(i)) {
-            $("#" + products[i]["id"] + "name").show();
-            $("#" + products[i]["id"] + "genre").show();
-            $("#" + products[i]["id"] + "rating").show();
-            $("#" + products[i]["id"] + "stock").show();
-            $("#" + products[i]["id"] + "price").show();
+            console.log("showing " + i);
+            $("#" + i["id"] + "name").show();
+            $("#" + i["id"] + "genre").show();
+            $("#" + i["id"] + "rating").show();
+            $("#" + i["id"] + "stock").show();
+            $("#" + i["id"] + "price").show();
         }
     }
     function hide(i) {
         if (!isHidden(i)) {
-            $("#" + products[i]["id"] + "name").hide();
-            $("#" + products[i]["id"] + "genre").hide();
-            $("#" + products[i]["id"] + "rating").hide();
-            $("#" + products[i]["id"] + "stock").hide();
-            $("#" + products[i]["id"] + "price").hide();
+            console.log("hiding " + i);
+            $("#" + i["id"] + "name").hide();
+            $("#" + i["id"] + "genre").hide();
+            $("#" + i["id"] + "rating").hide();
+            $("#" + i["id"] + "stock").hide();
+            $("#" + i["id"] + "price").hide();
         }
     }
     function checkAv(i) {
-        if (av && products[i]["stock"] > 0 || !av || (av && unav))
+        if (av && i["stock"] > 0 || !av || (av && unav)) {
+            console.log("checkav true: av is " + av );
           return true;
+        }
         else {
           return false;
         }
       }
       function checkUnav(i) {
-        if (unav && products[i]["stock"] == 0 || !unav || (av&&unav))
+        if (unav && i["stock"] == 0 || !unav || (av&&unav))
           return true;
           else {
             return false;
@@ -164,32 +107,79 @@ $(function () {
       }
       function checkPrice(i) {
 
-        if( (p1 && products[i]['price'] <= 25) || (p2 && (products[i]['price'] >= 25 
-        && products[i]['price'] <= 50) ) || (p3 && products[i]['price'] >= 50) || (!p1 && !p2 && !p3))
+        if( (p1 && i['price'] <= 25) || (p2 && (i['price'] >= 25 
+        && i['price'] <= 50) ) || (p3 && i['price'] >= 50) || (!p1 && !p2 && !p3))
           return true;
         else
           return false
 
       }
       function checkR1(i) {
-        if (r1 && products[i]["rating"] >= 1 || !r1)
+        if (r1 && i["rating"] >= 1 || !r1)
           return true;
           else {
             return false;
           }
       }
       function checkR2(i) {
-        if (r2 && products[i]["rating"] == 2 || !r2)
+        if (r2 && i["rating"] == 2 || !r2)
           return true;
           else {
             return false;
           }
   
       }
+
+      function removeAll() {
+        $(".main").empty();
+      }
+      function rebuild() {
+            removeAll();
+            build();
+      }
     function fitsRequirements(i) {
-        if (checkAv(i) && checkUnav(i) && checkPrice(i) && checkR1(i) && checkR2(i))
+        console.log("checking requirements");
+        console.log("availability is " + i["stock"]);
+        if (checkAv(i) && checkUnav(i) && checkPrice(i) && checkR1(i) && checkR2(i)) {
+            console.log("true");
             return true;
-        else return false;
+        }
+        else {
+            console.log("false");
+            return false;
+        }
+    }
+
+    function build() {
+        console.log("building");
+        var row = $('<div class="row"></div>');
+        var loc = 0;
+        console.log(products);
+        products.forEach(function (product) {
+            var col;
+            if (loc % rowSize == 0) {
+                col = $("<div class='w-100'></div>");
+                row.append(col);
+            }
+            var book = product;
+            //console.log(book);
+            if(fitsRequirements(book)) {
+                //console.log("fits requirements stock is " + book["stock"]);
+                //console.log(book);
+                col = $('<div class="col col-md-offset-2"></div>');
+                col.append($('<h2 id="' + book["id"] + 'name' + '"></h2>').text(book["name"])); // book name
+                col.append($('<h3 id="' + book["id"] + 'genre' + '"></h3>').text("Genre: " + book["genre"])); // book genre
+                col.append($('<h3 id="' + book["id"] + 'price' + '"></h3>').text("Price: $" + book["price"])); // book price
+                col.append($('<h3 id="' + book["id"] + 'stock' + '"></h3>').text("Stock: " + book["stock"])); // book stock
+                col.append($('<h3 id="' + book["id"] + 'rating' + '"></h3>').text("Rating: " + book["rating"])); // book rating
+                row.append(col);
+                loc++;
+            }
+            else
+                console.log("didn't fit requirements stock is " + book["stock"]);
+        });
+        console.log(row);
+        $(".main").append(row);
     }
     var database = firebase.database();
     database.ref("departments/books").once("value").then(function (snapshot) {

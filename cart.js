@@ -11,38 +11,49 @@ var config = {
 
 $(function () {
     console.log("cart");
-    var http = new XMLHttpRequest();
-    http.onreadystatechange = function() {
-        if(http.readyState == 4 && http.status == 200) {
-            displayCart(http.responseText);
+
+
+    function get(url, callback) {
+        var http = new XMLHttpRequest();
+        http.onreadystatechange = function() {
+            if(http.readyState == 4 && http.status == 200) {
+                callback(http.responseText);
+            }
         }
-    }
-    http.open("GET", '/getCart', true);
-    http.setRequestHeader("Content-type","application/json");
-    http.send();
-
-    function test() {
-        console.log("this is a test");
-    }
-
-    function displayCart(data) {
-        var cart = JSON.parse(data);
-        var price = 0;
-        cart.forEach( function (prod) {
-            price += prod["price"];
-            buildProd(prod);
-        })
-    }
-
-    function buildProd(prod) {
-        var row = $('<div class="row"></div>');
-        var col = $('<div class="col col-md-offset-4">');
-        col.append($('<h1 id="' + prod["id"] + 'name' + '"></h1>').text(prod["name"])); // book name
-        col.append($('<h2 id="' + prod["id"] + 'price' + '"></h2>').text("Price: $" + prod["price"])); // book price
-        col.append($('</div>'));
-        row.append(col);
-        $(".main").append(row);
+        http.open("GET", url, true);
+        http.contex
+        //http.setRequestHeader("Content-type","application/json");
+        http.send();
+        //http.send(null);
 
     }
+
+
+    $("body").on("click", '.btn', function(event) {
+        // this actually fucking works. wow im stupid
+        if(this.id = "purchase") {
+            get('/', loadpage);
+            console.log("lj");
+        }
+    })
+
+    function loadpage(html) {
+        console.log("load index");
+        /*$("body").empty();
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        document.body.append(doc.body);
+        document.head.append(doc.head);*/
+        get('/clearcart' , log);
+        location.reload();
+        //get('/getCart', addCart);
+        
+    }
+
+    function log(thing) {
+        console.log(thing);
+    }
+
+
+
 })
 

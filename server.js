@@ -4,6 +4,7 @@ var port = parseInt(process.argv[2]);
 app.use(bodyParser.json())
 
 var cart = [];
+var allProds = [];
 var av, unav, p1, p2, p3, r1, r2;
 
 app.get('/', function(req, res) {
@@ -13,6 +14,10 @@ app.get('/', function(req, res) {
 app.get('/app.js', function(req, res) {
     res.sendFile(__dirname + '/app.js');
 });
+
+app.get('/cart.js', function (req, res) {
+    res.sendFile(__dirname + '/cart.js');
+})
 
 app.get('/lib/css/:id', function(req, res) {
     res.sendFile(__dirname + '/lib/css/' + req.params.id);
@@ -26,6 +31,24 @@ app.get('/cart/view.html', function(req, res) {
     res.sendFile(__dirname + '/cart/view.html');
 });
 
+app.get('/allProds' , function(req,res) {
+    res.send(JSON.stringify(allProds));
+})
+
+app.get('/clearcart', function (req,res) {
+    cart.length=0;
+    res.send("cleared cart");
+})
+
+app.post('/makeProds' , function (req,res) {
+    var list = req.body;
+    list.forEach(function (element) {
+        allProds.push(element);
+    })
+
+    res.send("made prods.");
+})
+
 app.post('/products/:bools', function(req,res) {
     sendProds(req,res);
 })
@@ -33,6 +56,7 @@ app.post('/products/:bools', function(req,res) {
 app.get('/bools', function(req,res) {
     res.send(av + ',' + unav + ',' + p1 + ',' + p2 + ',' + p3 + ',' + r1+ ',' + r2);
 })
+
 app.post('/addToCart', function(req,res) {
     console.log("in add to cart");
     var inCart = false;
@@ -48,7 +72,7 @@ app.post('/addToCart', function(req,res) {
         cart.push(req.body);
     }
     console.log(cart);
-    console.log("/n/n");
+    console.log('/n/n');
     res.send("hi");
 })
 

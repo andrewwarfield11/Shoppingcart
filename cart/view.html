@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS, comes from the Bootstrap starter tempalte -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+    <!-- JQuery first, then Popper.js, then Bootstrap JS, comes from the Bootstrap starter template -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- Firebase next, comes from the Firebase documentation -->
+    <script src="https://www.gstatic.com/firebasejs/5.4.1/firebase.js"></script>
+    <script src="/cart.js"></script>
+
+    <style>
+        .sidenav {
+        width: 125px;
+        position: fixed;
+        z-index: 1;
+        left: 0px;
+        background: #aaa;
+        overflow-x: hidden;
+        padding: 8px 0;
+        }
+    
+        .main {
+            margin-left: 125px;
+            padding: 30px 0px;
+        }
+    
+        .page-footer {
+            text-align: center;
+        }
+        .page-footer {
+            /* using a sticky footer for now. Might change later. */
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: red;
+            color: white;
+            text-align: center;
+        }
+
+        .btn {
+            width: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- add a container -->
+    <div class="container">
+        <!--Navbar.-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
+                <div class="navbar-nav">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarDropdown" aria-expanded"false">
+                        <i class="glyphicon glyphicon-align-center"></i>
+                    </button> 
+                    <a class="nav-link" href="#">Departments</a>
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search..." aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Localization</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Account</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="cartbutton">Cart</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        
+
+        <div class="main">
+            <div class="row">
+                <div class="col" id="items">
+
+                </div>
+                <div class="col">
+                    <div class="col">
+                    <ul class="list-group">
+                        <li class="list-group item" id="cost"></li>
+                        <li class="list-group item"><button type="button" class="btn btn-primary" id="purchase" >Purchase</a></li>
+                    </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="page-footer text-center bg-dark">
+            <div class="row">
+                <!--I made the extra columns to get resources centered on the page.-->
+                <div class="col"></div>
+                <div class="col">
+                    <h2 class="text-center text-white">Resources</h1>
+                </div>
+                <div class="col"></div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a href="#">About Us</a>
+                </div>
+                <div class="col">
+                    <a href="#">Contact Us</a>
+                </div>
+            </div>
+
+        </footer>
+
+    </div>
+    <script type="text/javascript">
+    var purchase = document.getElementBYId('purchase');
+    purchase.onclick = function() {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "/cart.js";
+        document.getElementsByTagName("head")[0].appendChild(script);
+        return false;
+    }
+    </script>
+</body>
+</body>
+
+</html>

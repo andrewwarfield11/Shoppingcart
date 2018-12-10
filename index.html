@@ -43,12 +43,7 @@
         padding: 30px 0px;
     }
 
-    .page-footer {
-        text-align: center;
-    }
-    .footer {
-        width: 100%;
-    }
+
 </style>
 </head>
 
@@ -56,15 +51,20 @@
     <!-- add a container -->
     <div class="container">
         <!--Navbar.-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
             <div class="navbar-nav">
+                <label class="active">
+                <button type="button" id="collapse" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarDropdown" aria-expanded"false">
+                    <i class="glyphicon glyphicon-align-center"></i>
+                </button> 
+                </label>
                 <a class="nav-link" href="#">Departments</a>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search..." aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="#">Localization</a>
@@ -73,7 +73,7 @@
                         <a class="nav-link" href="#">Account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Cart</a>
+                        <a class="nav-link" href="#" id="cartbutton">Cart</a>
                     </li>
                 </ul>
             </div>
@@ -90,19 +90,21 @@
                             <div class="checkbox" id="available">
                                 <!--Look at what was actually submitted and compare-->
                                 <label>
-                                    <input type="checkbox" id="av">
+                                    <input type="checkbox" id="avcheck">
                                     <span class="cr" id="available"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     Available
                                 </label>
+                            </div>
                         </li>
                         <li class="list-group item">
                             <div class="checkbox" id="unavailable">
                                 <label>
                                     <!--NOTE: the id must be in the input type checkbox-->
-                                    <input type="checkbox" id="unav">
+                                    <input type="checkbox" id="unavcheck">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     Unavailable
                                 </label>
+                            </div>
                         </li>
                     </ul>
                 </li>
@@ -114,26 +116,29 @@
                         <li class="list-group item">
                             <div class="checkbox" id="price1">
                                 <label>
-                                    <input type="checkbox" id="price1">
+                                    <input type="checkbox" id="price1check">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     $0-$25
                                 </label>
+                            </div>
                         </li>
                         <li class="list-group item">
                             <div class="checkbox" id="price2">
                                 <label>
-                                    <input type="checkbox" id="price2">
+                                    <input type="checkbox" id="price2check">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     $25-$50
                                 </label>
+                            </div>
                         </li>
                         <li class="list-group item">
                             <div class="checkbox" id="price3">
                                 <label>
-                                    <input type="checkbox" id="price3">
+                                    <input type="checkbox" id="price3check">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     $50-$100
                                 </label>
+                            </div>
                         </li>
                     </ul>
                 </li>
@@ -145,15 +150,16 @@
                         <li class="list-group item">
                             <div class="checkbox" id="rating1">
                                 <label>
-                                    <input type="checkbox" id="rating1">
+                                    <input type="checkbox" id="rating1check">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     +1
                                 </label>
+                            </div>
                         </li>
                         <li class="list-group item">
                             <div class="checkbox" id="rating2">
                                 <label>
-                                    <input type="checkbox" id="rating2">
+                                    <input type="checkbox" id="rating2check">
                                     <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
                                     +2
                                 </label>

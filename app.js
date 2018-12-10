@@ -13,6 +13,7 @@ firebase.initializeApp(config);
 
 // use JQuery to call your code after the document.ready event
 $(function () {
+    
     var products = [];
     // booleans for the filters
     var av = false;
@@ -22,14 +23,125 @@ $(function () {
     var p1 = false;
     var p2 = false;
     var p3 = false;
+    //var url = 'https://hidden-reaches-58019.herokuapp.com/'
+    var url = 'localhost:5000'
 
-    var rowSize = 3;
-    // every time one of these is clicked, scrap previous html in main and add new ones
-    // try using .is(CLICKED)
+    function getViewport() {
+        // return values : 0 for small, 1 for medium, 2 for large
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        if(width < 500 || height < 500) {
+            return 0;
+        }
+        else if(width < 800 || height < 800) {
+            return 1;
+        }
+        else {
+            return 2;
+        }
+    }
+
+    function setRowSize(size) {
+        if(size == 0) {
+            return 1;
+        }
+        else if( size == 1) {
+            return 2;
+        }
+        else {
+            return 3;
+        }
+    }
+    $("#cartbutton").on("click", function(event) {
+        get('/cart/view.html',loadCart);
+    })
+
+
+    function loadCart(html) {
+        // definitely not the ideal way to do it, but it works
+        console.log("load cart");
+        document.body.innerHTML = "";
+        var body = html.split('<body>').pop().split('</body>')[0];
+        var head = html.split('<head>').pop().split('</head>')[0];
+        document.body.innerHTML = body;
+        document.head.innerHTML = head;
+        get('/getCart', addCart);
+        //window.location = url + '/cart/view.html';
+    }
+
+    function addCart(items) {
+        prods = JSON.parse(items);
+        var cost = 0;
+        prods.forEach( function(prod) {
+            cost += prod["price"];
+            var row = $('<div class="row"></div>');
+            var col = $('<div class="col col-md-offset-4">');
+            col.append($('<h1 id="' + prod["id"] + 'name' + '"></h1>').text(prod["name"])); // book name
+            col.append($('<h2 id="' + prod["id"] + 'price' + '"></h2>').text("Price: $" + prod["price"])); // book price
+            col.append($('</div>'));
+            row.append(col);
+            $("#items").append(row);
+
+        });
+
+        $("#cost").append($('<h1>Total: ' + cost + '</h1>'));
+    }
+    function getBools() {
+        var str = getAvCheck() + ',' + getUnavCheck() + ',' + getP1Check() + ',' + getP2Check() + ',' + 
+        getP3Check() + ',' + getR1Check() + ',' + getR2Check();
+        return str;
+    }
+
+    function getAvCheck() {
+        return document.getElementById("avcheck").checked;
+    }
+    function getUnavCheck() {
+        return document.getElementById("unavcheck").checked;
+    }
+    function getP1Check() {
+        return document.getElementById("price1check").checked;
+    }
+    function getP2Check() {
+        return document.getElementById("price2check").checked;
+    }
+    function getP3Check() {
+        return document.getElementById("price3check").checked;
+    }
+    function getR1Check() {
+        return document.getElementById("rating1check").checked;
+    }
+    function getR2Check() {
+        return document.getElementById("rating2check").checked;
+    }
+
+    $(document).on("click", 'input[type="checkbox"]', function (event) {
+        var name = this.id;
+        if(! name.endsWith("check")) {
+            console.log (this);
+            console.log("iterating over prods");
+            products.forEach( function(prod) {
+                if(prod["name"] == name) {
+                    //console.log("found it");
+                    if(prod["stock"] > 0)
+                        send( '/addToCart' , dothis, prod);
+                }
+                //else {
+                    //console.log("False: name is " + name + " and product[name] is " + product["name"] + " and this.checked is " + this.checked);
+                //}
+            })
+        }
+
+        // set id = book id
+        // send info to server
+        // if server gets a book that is already in list remove it
+        // maybe try to check in here if check box is checked instead
+    })
+
     $("#available label").on("click", function (event) {
         console.log(event);
         av = !av;
         rebuild();
+        //send( '/products/' + getBools() , build, products);
     });
     $("#unavailable label").on("click", function (event) {
         console.log(event);
@@ -42,7 +154,7 @@ $(function () {
         rebuild();
     });
     $("#price2 label").on("click", function (event) {
-        console.log(event);
+        //console.log(event);
         p2 = !p2;
         rebuild();
     });
@@ -65,33 +177,9 @@ $(function () {
         rebuild();
     });
 
-    function isHidden(i) {
-        if ($("#" + i["id"] + "name").is(":hidden")) return true;
-        else return false;
-    }
-    function show(i) {
-        if (isHidden(i)) {
-            console.log("showing " + i);
-            $("#" + i["id"] + "name").show();
-            $("#" + i["id"] + "genre").show();
-            $("#" + i["id"] + "rating").show();
-            $("#" + i["id"] + "stock").show();
-            $("#" + i["id"] + "price").show();
-        }
-    }
-    function hide(i) {
-        if (!isHidden(i)) {
-            console.log("hiding " + i);
-            $("#" + i["id"] + "name").hide();
-            $("#" + i["id"] + "genre").hide();
-            $("#" + i["id"] + "rating").hide();
-            $("#" + i["id"] + "stock").hide();
-            $("#" + i["id"] + "price").hide();
-        }
-    }
     function checkAv(i) {
-        if (av && i["stock"] > 0 || !av || (av && unav)) {
-            console.log("checkav true: av is " + av );
+        if (getAvCheck() && i["stock"] > 0 || !getAvCheck() || (getAvCheck() && getUnavCheck())) {
+            //console.log("checkav true: av is " + av );
           return true;
         }
         else {
@@ -99,7 +187,7 @@ $(function () {
         }
       }
       function checkUnav(i) {
-        if (unav && i["stock"] == 0 || !unav || (av&&unav))
+        if (getUnavCheck() && i["stock"] == 0 || !getUnavCheck() || (getAvCheck() && getUnavCheck()))
           return true;
           else {
             return false;
@@ -107,22 +195,22 @@ $(function () {
       }
       function checkPrice(i) {
 
-        if( (p1 && i['price'] <= 25) || (p2 && (i['price'] >= 25 
-        && i['price'] <= 50) ) || (p3 && i['price'] >= 50) || (!p1 && !p2 && !p3))
+        if( (getP1Check() && i['price'] <= 25) || (getP2Check() && (i['price'] >= 25 && i['price'] <= 50) )
+         || (getP3Check() && i['price'] >= 50) || (!getP1Check() && !getP2Check() && !getP3Check()))
           return true;
         else
           return false
 
       }
       function checkR1(i) {
-        if (r1 && i["rating"] >= 1 || !r1)
+        if (getR1Check() && i["rating"] >= 1 || !getR1Check())
           return true;
           else {
             return false;
           }
       }
       function checkR2(i) {
-        if (r2 && i["rating"] == 2 || !r2)
+        if (getR2Check() && i["rating"] == 2 || !getR2Check())
           return true;
           else {
             return false;
@@ -135,28 +223,31 @@ $(function () {
       }
       function rebuild() {
             removeAll();
-            build();
+            build(products, true);
       }
     function fitsRequirements(i) {
-        console.log("checking requirements");
-        console.log("availability is " + i["stock"]);
+        //console.log("checking requirements");
+        //console.log("availability is " + i["stock"]);
         if (checkAv(i) && checkUnav(i) && checkPrice(i) && checkR1(i) && checkR2(i)) {
-            console.log("true");
+            //console.log("true");
             return true;
         }
         else {
-            console.log("false");
+            //console.log("false");
             return false;
         }
     }
 
-    function build() {
-        console.log("building");
+    function build(prods, firstBuild) {
         var row = $('<div class="row"></div>');
         var loc = 0;
-        console.log(products);
-        products.forEach(function (product) {
+        if(!firstBuild) {
+            prods = JSON.parse(prods);
+        }
+        //console.log(products);
+        prods.forEach(function (product) {
             var col;
+            var rowSize = setRowSize(getViewport());
             if (loc % rowSize == 0) {
                 col = $("<div class='w-100'></div>");
                 row.append(col);
@@ -164,47 +255,83 @@ $(function () {
             var book = product;
             //console.log(book);
             if(fitsRequirements(book)) {
-                //console.log("fits requirements stock is " + book["stock"]);
-                //console.log(book);
-                col = $('<div class="col col-md-offset-2"></div>');
-                col.append($('<h2 id="' + book["id"] + 'name' + '"></h2>').text(book["name"])); // book name
+
+                col = $('<div class="col col-md-offset-4">');
+                col.append($('<ul class="list-group">'));            
+                col.append($('<li class="list-group item>'));
+                col.append($('<h3 id="' + book["id"] + 'name' + '"></h3>').text(book["name"])); // book name
+                col.append($('</li>'));
+                col.append($('<li class="list-group item>'));
                 col.append($('<h3 id="' + book["id"] + 'genre' + '"></h3>').text("Genre: " + book["genre"])); // book genre
+                col.append($('<li class="list-group item>'));
                 col.append($('<h3 id="' + book["id"] + 'price' + '"></h3>').text("Price: $" + book["price"])); // book price
+                col.append($('</li>'));
+                col.append($('<li class="list-group item>'));
                 col.append($('<h3 id="' + book["id"] + 'stock' + '"></h3>').text("Stock: " + book["stock"])); // book stock
+                col.append($('</li>'));
+                col.append($('<li class="list-group item>'));
                 col.append($('<h3 id="' + book["id"] + 'rating' + '"></h3>').text("Rating: " + book["rating"])); // book rating
+                col.append($('</li>'));
+                col.append($('<li class="list-group item>'));
+                col.append($('<div class="checkbox"> <label> <input type="checkbox" id="' + book["name"] + '"> <span class="cr">\
+                    <i class="cr-icon glyphicon glyphicon-ok"> </i> </span> Add To Cart </label> </div>'));
+                col.append($('</li>'));
+                col.append($('</ul>'));
+    
                 row.append(col);
                 loc++;
             }
-            else
-                console.log("didn't fit requirements stock is " + book["stock"]);
         });
-        console.log(row);
+        //console.log(row);
         $(".main").append(row);
     }
     var database = firebase.database();
     database.ref("departments/books").once("value").then(function (snapshot) {
         var data = snapshot.val();
         console.log(data);
-        var row = $('<div class="row"></div>');
         var loc = 0;
         Object.keys(data["products"]).forEach(function (key) {
-            var col, bookHTML;
-            if (loc % rowSize == 0) {
-                col = $("<div class='w-100'></div>");
-                row.append(col);
-            }
-            loc++;
             var book = data["products"][key];
             console.log(book);
             products.push(book);
-            col = $('<div class="col col-md-offset-2"></div>');
-            col.append($('<h2 id="' + book["id"] + 'name' + '"></h2>').text(book["name"])); // book name
-            col.append($('<h3 id="' + book["id"] + 'genre' + '"></h3>').text("Genre: " + book["genre"])); // book genre
-            col.append($('<h3 id="' + book["id"] + 'price' + '"></h3>').text("Price: $" + book["price"])); // book price
-            col.append($('<h3 id="' + book["id"] + 'stock' + '"></h3>').text("Stock: " + book["stock"])); // book stock
-            col.append($('<h3 id="' + book["id"] + 'rating' + '"></h3>').text("Rating: " + book["rating"])); // book rating
-            row.append(col);
+
         });
-        $(".main").append(row);
+        build(products, true);
     });
+
+    // connect to server
+
+    function send(url, callback, data) {
+        var http = new XMLHttpRequest();
+        http.onreadystatechange = function() {
+            if(http.readyState == 4 && http.status == 200) {
+                callback(http.responseText, false);
+            }
+        }
+        http.open("POST", url, true);
+        http.setRequestHeader("Content-type","application/json");
+        http.send(JSON.stringify(data));
+        //http.send(null);
+
+    }
+
+
+    function get(url, callback) {
+        var http = new XMLHttpRequest();
+        http.onreadystatechange = function() {
+            if(http.readyState == 4 && http.status == 200) {
+                callback(http.responseText);
+            }
+        }
+        http.open("GET", url, true);
+        http.contex
+        //http.setRequestHeader("Content-type","application/json");
+        http.send();
+        //http.send(null);
+
+    }
+    function dothis(cb) {
+        console.log(cb);
+    }
+
 });

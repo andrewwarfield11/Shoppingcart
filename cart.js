@@ -22,15 +22,11 @@ $(function () {
         }
         http.open("GET", url, true);
         http.contex
-        //http.setRequestHeader("Content-type","application/json");
         http.send();
-        //http.send(null);
-
     }
 
 
     $("body").on("click", '.btn', function(event) {
-        // this actually fucking works. wow im stupid
         if(this.id = "purchase") {
             get('/', loadpage);
             console.log("lj");
@@ -39,14 +35,8 @@ $(function () {
 
     function loadpage(html) {
         console.log("load index");
-        /*$("body").empty();
-        var doc = new DOMParser().parseFromString(html, 'text/html');
-        document.body.append(doc.body);
-        document.head.append(doc.head);*/
         get('/clearcart' , log);
-        location.reload();
-        //get('/getCart', addCart);
-        
+        location.reload();        
     }
 
     function log(thing) {

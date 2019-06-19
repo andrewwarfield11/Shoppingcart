@@ -126,7 +126,6 @@ function sendProds(req,res) {
 function checkAv(i) {
     if ( av && (i["stock"] > 0 || unav) || !av) {
         if(i['stock'] == 0 && av) {
-            console.log("WHAT THE FUCK IS THIS " + unav);
             console.log(" checkav returning false");
             return false;
         }
@@ -141,12 +140,10 @@ function checkAv(i) {
   function checkUnav(i) {
     if (unav && i["stock"] == 0 || !unav || (av&&unav)) {
         console.log(" checkunav returning true");
-
-      return true;
+        return true;
     }
       else {
         console.log(" checkunav returning false");
-
         return false;
       }
   }
@@ -155,37 +152,31 @@ function checkAv(i) {
     if( (p1 && i['price'] <= 25) || (p2 && (i['price'] >= 25 
     && i['price'] <= 50) ) || (p3 && i['price'] >= 50) || (!p1 && !p2 && !p3)) {
         console.log(" checkprice returning true");
-
-      return true;
+        return true;
     }
     else {
         console.log(" checkprice returning true");
-
-      return false;
+        return false;
     }
 
   }
   function checkR1(i) {
     if (r1 && i["rating"] >= 1 || !r1) {
         console.log(" checkr1 returning true");
-
-      return true;
+        return true;
     }
       else {
         console.log(" checkr1 returning false");
-
         return false;
       }
   }
   function checkR2(i) {
     if (r2 && i["rating"] == 2 || !r2) {
         console.log(" checkr2 returning true");
-
-      return true;
+        return true;
     }
       else {
         console.log(" checkr2 returning true");
-
         return false;
       }
 
